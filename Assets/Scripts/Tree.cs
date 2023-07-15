@@ -2,25 +2,23 @@ using UnityEngine;
 
 public class Tree : MonoBehaviour
 {
-    public int maxHealth = 100;
-    private int currentHealth;
+    public int maxHealth = 20;
     private Rigidbody rb;
 
     private void Start()
     {
-        currentHealth = maxHealth;
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = true; // Начинаем с выключенной гравитации
     }
 
     public void TakeDamage(int damageAmount)
     {
-        currentHealth -= damageAmount;
+        maxHealth -= damageAmount;
 
-        if (currentHealth <= 0)
+        if (maxHealth <= 0)
         {
             rb.isKinematic = false; // Включаем гравитацию, чтобы дерево начало падать
-            rb.AddForce(Vector3.down * 100f, ForceMode.Impulse); // Добавляем силу гравитации
+            rb.AddForce(Vector3.right * 50f, ForceMode.Impulse); // Добавляем силу гравитации
         }
     }
 
@@ -28,7 +26,7 @@ public class Tree : MonoBehaviour
     {
         if (other.CompareTag("Axe") && PlayerMove.isHitTree)
         {
-            maxHealth -= 5;
+            TakeDamage(5);
         }
     }
 }

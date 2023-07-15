@@ -17,7 +17,6 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] float rotationspeed;
     public static bool isHit = true;
     public static bool isHitTree = false;
-    public Transform targetPositionHitTree; // —сылка на пустой объект целевой позиции
     public Transform targetObjectTree; // —сылка на объект дерева
 
 
