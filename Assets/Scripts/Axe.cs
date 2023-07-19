@@ -12,7 +12,7 @@ public class Axe : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Tree") && PlayerMove.isHitTree)
+        if (other.CompareTag("Tree") && PlayerMove.isHit)
         {
             Vector3 hitPoint = transform.position; // Место контакта - позиция топора
             Instantiate(hitEffectPrefab, hitPoint, Quaternion.identity);

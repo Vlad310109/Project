@@ -10,11 +10,15 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] Joystick joystick;
     [SerializeField] GameObject player;
     [SerializeField] GameObject HitAttack;
-    [SerializeField] GameObject HitTree;
+    public GameObject IronAxe;
+    public GameObject Axe;
+    public GameObject UI_CraftInstrument;
+    public GameObject UI_Craft_IronAxe;
     Animator anim;
     Vector3 direction;
     Rigidbody rb;
     [SerializeField] float rotationspeed;
+    public Inventory inventory;
     public static bool isHit = true;
     public static bool isHitTree = false;
     public Transform targetObjectTree; // Ссылка на объект дерева
@@ -24,6 +28,7 @@ public class PlayerMove : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         anim = player.GetComponent<Animator>();
+        isHit = false;
     }
 
    
@@ -44,47 +49,56 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void PlayerCraft()
     {
-        if (other.CompareTag("Tree"))
-        {
-            HitAttack.SetActive(false); // Активируем первую кнопку
-            HitTree.SetActive(true); // Деактивируем вторую кнопку
-        }
+        UI_CraftInstrument.SetActive(true);
     }
 
-    private void OnTriggerExit(Collider other)
+    public void ExitPlayerCraft()
     {
-        if (other.CompareTag("Tree"))
+        UI_CraftInstrument.SetActive(false);
+    }
+
+    public void CraftIronAxe()
+    {
+        UI_Craft_IronAxe.SetActive(true);
+    }
+
+    public void ExitCraftIronAxe()
+    {
+        UI_Craft_IronAxe.SetActive(false);
+    }
+
+    public void GetAxe()
+    {
+        Axe.SetActive(true);
+        IronAxe.SetActive(false);
+    }
+
+    public void GetIronAxe()
+    {
+        if(inventory.HaveIronAxe >= 1)
         {
-            HitAttack.SetActive(true); // Активируем первую кнопку
-            HitTree.SetActive(false); // Деактивируем вторую кнопку
+            Axe.SetActive(false);
+            IronAxe.SetActive(true);
+        }
+        else
+        {
+            Debug.Log("У вас нету Железного Топора");
         }
     }
 
     public void Hit1()
     {
+        isHit = true;
         StartCoroutine(IHit());
     }
 
-    public void Hit2()
-    {
-        StartCoroutine(IHit2());
-    }
-
-    IEnumerator IHit2()
-    {
-        isHitTree = true;
-        yield return new WaitForSeconds(1f);
-        isHitTree = false;
-    }
 
     IEnumerator IHit()
     {
-        isHit = true;
         anim.SetBool("Hit", true);
         yield return new WaitForSeconds(0.5f);
-        isHit = false;
         anim.SetBool("Hit", false);
     }
 }
