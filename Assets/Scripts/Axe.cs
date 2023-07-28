@@ -4,6 +4,7 @@ using static Tree;
 public class Axe : MonoBehaviour
 {
     public GameObject hitEffectPrefab; // Префаб эффекта удара
+    public ZombieDynamite zombieDynamite;
 
     private void Start()
     {
@@ -16,6 +17,11 @@ public class Axe : MonoBehaviour
         {
             Vector3 hitPoint = transform.position; // Место контакта - позиция топора
             Instantiate(hitEffectPrefab, hitPoint, Quaternion.identity);
+        }
+
+        if (other.CompareTag("Zombie") && PlayerMove.isHit)
+        {
+            zombieDynamite.maxHealth -= 20;
         }
     }
 }

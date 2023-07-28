@@ -10,6 +10,8 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] Joystick joystick;
     [SerializeField] GameObject player;
     [SerializeField] GameObject HitAttack;
+    public float maxHealth = 100f; // Максимальное здоровье игрока
+    public float currentHealth = 100f; // Текущее здоровье игрока
     public GameObject IronAxe;
     public GameObject Axe;
     public GameObject UI_CraftInstrument;
@@ -19,9 +21,11 @@ public class PlayerMove : MonoBehaviour
     Rigidbody rb;
     [SerializeField] float rotationspeed;
     public Inventory inventory;
+    public ZombieDynamite zombieDynamite;
     public static bool isHit = true;
     public static bool isHitTree = false;
     public Transform targetObjectTree; // Ссылка на объект дерева
+    public Text healthText; // Ссылка на компонент Text, который отображает здоровье
 
 
     void Start()
@@ -29,6 +33,8 @@ public class PlayerMove : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         anim = player.GetComponent<Animator>();
         isHit = false;
+        currentHealth = maxHealth; // Устанавливаем начальное здоровье игрока
+        UpdateHealthText(); // Обновляем текст здоровья при старте
     }
 
    
@@ -46,6 +52,20 @@ public class PlayerMove : MonoBehaviour
         if (direction != new Vector3(0,0,0))
         {
             player.transform.rotation = Quaternion.Lerp(player.transform.rotation, Quaternion.LookRotation(direction), Time.fixedDeltaTime * rotationspeed);
+        }
+    }
+
+    private void UpdateHealthText()
+    {
+        healthText.text = currentHealth.ToString();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Boom") && zombieDynamite.maxHealth <= 0)
+        {
+            maxHealth -= 30;
+            healthText.text = maxHealth.ToString();
         }
     }
 
@@ -102,3 +122,5 @@ public class PlayerMove : MonoBehaviour
         anim.SetBool("Hit", false);
     }
 }
+
+

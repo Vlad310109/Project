@@ -9,6 +9,9 @@ TagManager:
   - Pick
   - Stone
   - Iron
+  - Zombie
+  - Boom
+  - Base
   layers:
   - Default
   - TransparentFX
